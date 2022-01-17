@@ -21,6 +21,7 @@ public class MemberService {
 
     /*회원 가입*/
     public Long join(Member member){
+
         // 같은이름 불가조건
         // ctrl+alt+v = 변수로 만들어줌
         // ctrl+alt+M = 작성한 로직을 메소드로 꺼내줌.
