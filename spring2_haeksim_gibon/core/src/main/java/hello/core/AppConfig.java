@@ -1,6 +1,8 @@
 package hello.core;
 
-import hello.core.discount.FixDiscountPolicy;
+import hello.core.discount.DiscountPolicy;
+import hello.core.discount.RateDiscountPolicy;
+import hello.core.member.MemberRepository;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
 import hello.core.member.MemoryMemberRepository;
@@ -14,10 +16,19 @@ public class AppConfig {
 
     public MemberService memberService() {
         // 생성자 주입
-        return new MemberServiceImpl(new MemoryMemberRepository());
+        return new MemberServiceImpl(getMemberRepository());
+    }
+    // new memberRepository() 드래그후 ctrl+alt+M => 메소드로 꺼내주는 리팩토링 가능
+    private MemberRepository getMemberRepository() {
+        return new MemoryMemberRepository();
     }
 
     public OrderService orderService() {
-        return new OrderServiceImpl(new MemoryMemberRepository(), new FixDiscountPolicy());
+        return new OrderServiceImpl(getMemberRepository(), getDiscountPolicy());
+    }
+
+    private DiscountPolicy getDiscountPolicy() {
+//        return new FixDiscountPolicy();   // 오직 이 부분만 변경해서 할인 정책을 갈아끼울 수 있다.
+        return new RateDiscountPolicy();
     }
 }
