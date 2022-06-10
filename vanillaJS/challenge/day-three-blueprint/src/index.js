@@ -39,6 +39,6 @@ const h2Text = document.querySelector("h2");
 console.dir(h2Text);
 h2Text.addEventListener("mouseenter", superEventHandler.mouseEnter);
 h2Text.addEventListener("mouseleave", superEventHandler.mouseLeave);
-h2Text.addEventListener("resize", superEventHandler.resize);
+window.addEventListener("resize", superEventHandler.resize);
 h2Text.addEventListener("contextmenu", superEventHandler.contextMenu);
 h2Text.addEventListener("click", superEventHandler.click);
