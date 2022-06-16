@@ -10,8 +10,8 @@ function showClock() {
     const xDate = new Date(thisYear, xMonth, xDay);
 
     // let leftTime = xDate.getTime()-today.getTime();
-    let leftTime = xDate-today;
-
+    let leftTime = xDate-today;     // 단위=밀리초
+    
     const leftDay = Math.floor( leftTime / (24*60*60*1000) );
     leftTime %= leftDay*(24*60*60*1000);
     const leftHour = Math.floor( leftTime / (60*60*1000) );
