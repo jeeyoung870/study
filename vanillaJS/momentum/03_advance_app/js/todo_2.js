@@ -55,7 +55,7 @@ function handleToDoSubmit(event) {
 todoForm.addEventListener("submit", handleToDoSubmit);
 
 // 새로고침시 toDos[]는 빈값이 되기때문에, 저장되어있던 list가 사라지지 않도록 toDos[]에 새로 추가
-// 과저 저장된 list 표시해주기
+// 과거 저장된 list 표시해주기
 const savedTodos = localStorage.getItem(TODOS_KEY);
 if(savedTodos) {
     const parsedTodos = JSON.parse(savedTodos);

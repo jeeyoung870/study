@@ -31,3 +31,7 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 4.  'nodemon.json' > add "ignore" to not restart server at changing front codes :
     "ignore" : ["src/public/*"]
 5.  'home.pug' > add mvp.css link to auto-decorate html
+
+[ ws : WebSocket Library for nodeJS ]
+
+1. install ws : >npm i ws
