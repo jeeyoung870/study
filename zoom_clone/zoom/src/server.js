@@ -9,7 +9,6 @@ app.set("view engine", "pug");
 app.set("views", __dirname + "/public/views");
 app.use("/public", express.static(__dirname + "/public"));
 
-console.log("hello");
 console.log(__dirname+ "/public/views");
 
 app.get("/", (req, res) => {res.render("home");});
@@ -30,15 +29,31 @@ const wss = new WebSocket.Server({ server });
 wss.on("connection", (socket) => {
     // console.log(socket);
     console.log("Connected to Browser ✔");
+    
+    sockets.push(socket);
+    // 각각의 socket들을 구별하기 위해 socket객체에 nickname item을 새로 추가
+    socket["nickname"] = "Anonymous";   
     // 연결 해제시 동작
     socket.on("close", () => {
         console.log("Disconnected from Browser ❌");
     });
     // 브라우저에서 메시지 수신시 동작
     socket.on("message", (message) => {
-        console.log(message.toString('utf-8'));
+        const msg = JSON.parse(message);    //String -> Object
+        switch(msg.type) {
+            case "new_msg":
+                sockets.forEach(sck => {
+                    sck.send(`${socket.nickname} : ${msg.payload}`);
+                });
+                break; 
+            case "nickname":
+                socket.nickname = msg.payload;
+        }
+        // sockets.forEach(sck => {
+        //     sck.send(message.toString('utf-8')); // 강의에서는 toString없이도 되던데 난 blob객체로 들어와서 parse필요함
+        // });
     });
-    socket.send("hello!");
 });
+const sockets = [];
 
 server.listen(3000, handleListen);
