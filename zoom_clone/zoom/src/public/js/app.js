@@ -1,46 +1,34 @@
-const msgList = document.querySelector("ul");
-const msgForm = document.querySelector("#msg");
-const nickForm = document.querySelector("#nick");
-// front -> back 으로 WebSocket 연결하기(인자로 wss용 url을 받는다.)
-// 여기의 socket : app.js(front)->server.js(back)에 해당하는 연결을 의미함.
-// server.js의 handleConnection함수 인자로 들어가는 socket객체 정보를 구성함.
-const socket = new WebSocket(`ws://${window.location.host}`);
-// 웹소켓 연결시
-socket.addEventListener("open", () => {
-    console.log("Connected to Server ✔");
-});
-// 메시지 수신시
-socket.addEventListener("message", (message) => {
-    const li = document.createElement("li");
-    li.innerText = message.data;
-    msgList.append(li);
-});
-// 연결 해제시
-socket.addEventListener("close", () => {
-    console.log("Disconnected from Server ❌");
-});
-// setTimeout(() => {
-//     // front -> back 으로 메시지 전송하기
-//     socket.send("Hello from the Browser!!🖐");
-// }, 10000);
+// io() : front > back 연결하는 소켓생성
+// view에 script(src="/socket.io/socket.io.js") 걸어줘서 사용가능해짐.
+const socket = io();
 
-// send() 는 인자로 string만 받기 때문에 JSON객체를 string화해준다.
-function makeMessage(type, payload) {
-    const msg = {type, payload};
-    return JSON.stringify(msg);
+const welcome = document.getElementById("welcome");
+const form = welcome.querySelector("form");
+const room = document.getElementById("room");
+
+room.hidden = true;
+
+let roomName;
+
+function showRoom() {
+    welcome.hidden = true;
+    room.hidden = false;
+    const h3 = room.querySelector("h3");
+    h3.innerText = `Room : ${roomName}`;
 }
-function handleSubmit(event) {
+function handleRoomSubmit(event) {
     event.preventDefault();
-    const input = msgForm.querySelector("input");
-    socket.send(makeMessage("new_msg", input.value));
-    input.value = "";
-}
-function handleNickSubmit(event) {
-    event.preventDefault();
-    const input = nickForm.querySelector("input");
-    socket.send(makeMessage("nickname", input.value));
+    const input = form.querySelector("input");
+    // ws의 socket.send() 역할을 하는 emit()
+    // ws는 이벤트가 한정되어 있고("message") String만 보낼수 있었지만 / emit은 원하는 이벤트명을 지정하고, 원하는 형태의 Object를 전달할 수 있다.
+    // 마지막 인자로 콜백함수를 바인딩 가능하다.(Optional)
+    socket.emit(
+        "enterRoom", 
+        input.value,
+        showRoom
+    );
+    roomName = input.value;
     input.value = "";
 }
 
-msgForm.addEventListener("submit", handleSubmit);
-nickForm.addEventListener("submit", handleNickSubmit);
+form.addEventListener("submit", handleRoomSubmit);

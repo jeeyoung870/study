@@ -34,4 +34,8 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 
 [ ws : WebSocket Library for nodeJS ]
 
-1. install ws : >npm i ws
+1.  zoom > npm i ws
+
+[ SocketIO : WebSocket Framework ]
+
+1.  zoom > npm i socket.io
