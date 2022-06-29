@@ -60,6 +60,38 @@ http://localhost:3000/socket.io/socket.io.js
     socket.join("방이름"); / socket.join(["방이름1", "방이름2"]); 복수참여
 2. 방 퇴장
     socket.leave("방이름"); / socket.leave(["방이름1", "방이름2"]);
-3. 방전체에 메시지/메시지+event 보내기
+3-1. 나 이외의 방'전체'에 메시지/메시지+event 보내기, '다른사용자'에게 private으로 보내기
     socket.to("방이름"); / socket.to(["방이름1", "방이름2"]);
     socket.to("방이름").emit("eventName", { some:"data" });
+    socket.to( /*특정사용자소켓id*/ ).emit("hey");
+3-2. 서버에 연결된 모든 소켓에게 event 전송하기
+    io.sockets.emit("event", {some:"data"});
+4. 사용자소켓 연결 해제시(그러나 아직 방에 있는상태) 실행되는 event
+    "disconnecting"
+5. 특정 방 모든소켓/특정소켓 을 강제로 다른 방에 참여하게 만들기 (server.js에서 가능)
+    io.in("room1").socketJoin(["room2", "room3"]);
+    io.in(theSocketId).socketJoin("room1");
+6. socket.rooms와 io.sockets.adapter.rooms 는 다름.
+    socket.rooms : 현재 접속한 사용자(브라우저)가 속한 방 리턴(Set객체)
+    io.sockets.adapter.rooms : socketIO에 연결된 모든 방(key)과 거기 속한 id집합인 Set객체(value)를 리턴.(map객체)
+    io.sockets.adapter.sids : socketIO에 연결된 모든 id(key), (id,방이름 Set)(value)를 리턴 (map객체)
+    ** adapter.rooms 는 public + priate // adapter.sids 는 private only
+        rooms의 key = 모든 room id
+        sids의 key = 모든 socket id (= 모든 private room id)
+        원래부터 소켓이 가지고 있는 private방의 id는 해당소켓의 id와 같음.
+
+*** javascript는 map객체 forEach 시 인자 순서가 (val, key) 임. 왜 그런지?모르겠음 짜증나게..
+
+[ Adapter ]
+연결도식 :
+client1 - serverA(socket) - Mongo Adapter - MongoDB
+client2 - serverB(socket) - Mongo Adapter - MongoDB
+Adapter= 다른 서버에 연결된 client1과 client2도  소통할 수 있게 DB와 연결하는 역할
+    큰 규모의 application에는 필수적.
+    Adapter와 DB를 연결해 사용하지 않으면 메모리정보로 동작하기 때문에 client1과 client2는 통신할수 없다.
+
+[ Admin UI for SocketIO ]
+참고링크 : https://socket.io/docs/v4/admin-ui/
+=> SocketIO 백엔드를 위한 관리자 UI패널. 모든 sockets,rooms,user 확인 가능
+설치 필요 > npm i @socket.io/admin-ui
+개별/전체 소켓 방참여/퇴장 가능

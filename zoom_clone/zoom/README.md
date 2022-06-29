@@ -39,3 +39,25 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 [ SocketIO : WebSocket Framework ]
 
 1.  zoom > npm i socket.io
+
+[ Admin UI(for SocketIO) ]
+
+1.  zoom > npm i @socket.io/admin-ui
+2.  server.js > import {instrument} from "@socket.io/admin-ui";
+3.  server.js => change const ioServer :
+    const ioServer = new Server(httpServer, {  
+     cors: {
+    origin: ["https://admin.socket.io"],
+    credentials: true
+    }
+    });
+    instrument(ioServer, {
+    auth: false
+    });
+4.  zoom > npm run dev
+5.  "https://admin.socket.io" => open in secret window
+6.  Connection configuration:
+    Server url = http://localhost:3000
+    Admin Namespace = /admin
+    Path = /socket.io
+    Parser = Built-in parser
