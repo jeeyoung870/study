@@ -2,6 +2,8 @@
 
 Zoom Clone using NodeJS, WebRTC and Websockets.
 
+#0 INTRODUCTION
+
 [ setting before develop(NodeJS Server Setup) ]
 
 1.  zoom > npm init -y
@@ -32,9 +34,16 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
     "ignore" : ["src/public/*"]
 5.  'home.pug' > add mvp.css link to auto-decorate html
 
+[ Order of file config ]
+nodemon.json -> src/server.js -> views/home.pug -> js/app.js
+
+#1 CHAT WITH WEBSOCKETS
+
 [ ws : WebSocket Library for nodeJS ]
 
 1.  zoom > npm i ws
+
+#2 SOCKETIO
 
 [ SocketIO : WebSocket Framework ]
 
@@ -61,3 +70,5 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
     Admin Namespace = /admin
     Path = /socket.io
     Parser = Built-in parser
+
+#3 VIDEO CALL

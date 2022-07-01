@@ -1,0 +1,50 @@
+[ 화상채팅을 위해 구현 필요한 기능 ]
+1. user의 비디오 가져오기 - 가져온 영상 화면에 보여주기
+2. 음성 mute/unmute  &&  카메라 on/off
+3. 휴대폰 사용시 전면/후면 카메라 전환
+
+
+[ home.pug에 video 태그 추가 ]
+video#myFace(autoplay, playsinline)
+playsinline : 영상 재생시 전체화면이 되지 않고 웹사이트 내에서 실행함.(모바일 환경 필요)
+autoplay : 자동재생
+
+
+[ app.js에서 Stream 받기 ]
+Stream = video + audio
+1) navigator가 지원하는 mediaDevices객체에서 유저미디어(stream) 받아오기
+// async(프로미스 리턴) 함수 getMedia()
+await navigator.mediaDevices.getUserMedia(constraints);
+** await은 async 함수 안에서만 동작. 다음 라인 넘어가지 않고 프로미스가 처리될때까지 기다림.
+
+2) myFace태그의 srcObject에 stream객체를 넣어준다.
+브라우저 연결후 카메라/마이크 허용을 클릭하면 영상이 화면에 나타난다.
+
+
+[ audio, video를 on/off 변경하기 ]
+getUserMedia()가 반환하는 Stream 객체는 
+getAudioTracks() -> 사용자의 모든 오디오 기기를 Array로 반환
+getVideoTracks() -> 사용자의 모든 비디오 기기를 Array로 반환
+함수를 지원한다.
+반환되는 Array의 모든 기기설정의(forEach) enabled 속성값을 true/false로 변경하면
+오디오/비디오 기기를 켜고 끌수있다.
+
+
+[ 카메라 전환을 위해 유저 비디오기기 목록 만들기 ]
+navigator가 지원하는 mediaDevices객체 지원 함수인 
+enumerateDevices() -> 데스크탑/모바일 모두의 '모든' 장치 정보를 Array로 반환함.
+1) 반환 array속 요소의 kind 프로퍼티가 "videoinput" 인 기기들만 찾는다.
+2) user가 카메라 선택할 수 있게 video기기들을 selectbox option으로 추가해준다.
+    카메라기기의 deviceId 프로퍼티는 option.value,
+                label 프로퍼티는 option.innerText 값으로 설정해준다.
+3) 사용자가 다른 option 선택시, 해당 value(devideId) 값으로 카메라를 즉시 변경해준다.
+    deviceId 적용은 getMedia()함수 속 getUserMedia(constraints)의 constraints부분에서 지정한다.
+    
+    <모바일 경우>
+    video: {facingMode: "user"}  ->셀카모드
+    video: {facingMode: {exact: "environment"} }   ->후면카메라
+    <모든경우>
+    video: { deviceId: "받아온유저기기id" }   ->특정기기선택, 없으면 다른기기화면으로 보여줌
+    video: { deviceId: {exact: "받아온유저기기id"} }  ->id 딱 일치하지 않으면 화면 안보여줌
+
+    myStream.getVideoTracks() : 현재 선택된 카메라를  Array반환함
