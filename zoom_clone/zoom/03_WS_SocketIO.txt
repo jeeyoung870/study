@@ -60,7 +60,7 @@ http://localhost:3000/socket.io/socket.io.js
     socket.join("방이름"); / socket.join(["방이름1", "방이름2"]); 복수참여
 2. 방 퇴장
     socket.leave("방이름"); / socket.leave(["방이름1", "방이름2"]);
-3-1. 나 이외의 방'전체'에 메시지/메시지+event 보내기, '다른사용자'에게 private으로 보내기
+3-1. !나 이외!의 방'전체'에 메시지/메시지+event 보내기, '다른사용자'에게 private으로 보내기
     socket.to("방이름"); / socket.to(["방이름1", "방이름2"]);
     socket.to("방이름").emit("eventName", { some:"data" });
     socket.to( /*특정사용자소켓id*/ ).emit("hey");

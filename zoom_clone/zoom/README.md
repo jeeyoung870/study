@@ -2,6 +2,8 @@
 
 Zoom Clone using NodeJS, WebRTC and Websockets.
 
+(app_query.js / query.pug / server_query.js -> 회사 작업임. 프로젝트와 관계없음)
+
 #0 INTRODUCTION
 
 [ setting before develop(NodeJS Server Setup) ]
@@ -72,3 +74,77 @@ nodemon.json -> src/server.js -> views/home.pug -> js/app.js
     Parser = Built-in parser
 
 #3 VIDEO CALL
+
+1. install localtunnel to access with phone :
+   !!! can get Just 1 url per 7 days !!!
+   (localtunnel - share server with the world)
+   zoom > npm i -g localtunnel
+   zoom > lt
+   zoom > npm run dev //localhost:3000
+   zoom > lt --port 3000
+   -> go to the localtunnel url and click continue
+   -> you can access with mobile using same localtunnel url
+
+<!-- -
+2. Cloudflare Zero Trust Tunnel (Alternative way to start free tunnel) :
+
+   1. Download & install Windows exe file :
+      https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/
+      https://github.com/ViRb3/wgcf/releases
+      windows_amd64.exe
+      change file name to 'cloudflared.exe'
+   2. open termianl(admin)
+      download directory > cloudflared.exe --version
+
+   3. Authenticate :
+      > cloudflared tunnel login
+   4. - go Cloudlare Zero Trust
+      - enter team name
+      - choose free plan(under 50 users)
+      - register Payment
+      - Settings > Devices > Certificates > Download certificate(.pem + .crt) -> place it in default cloudflared directory.
+      install it with https://developers.cloudflare.com/cloudflare-one/connections/connect-devices/warp/install-cloudflare-cert/
+       - Access > Tunnels > create a tunnel
+   5. - cmd(admin) > cloudflared tunnel create <NAME>
+
+   6. Install and run Connector :
+
+      - Download
+        https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.msi
+      - Run the installer.
+      - Open Command Prompt as Administrator.
+      - Run the following command :
+      cloudflared.exe service install eyJhIjoiZmYxNGM0NDVmOTJlYTAyODdlYmM3YTljMzFlMDBkZjciLCJ0IjoiMDEwNzEwNGUtY2EzMS00NWQ2LWJhMTAtOGVhYzY3NzllZTYyIiwicyI6IlpHUTBZemRoTXprdFpqSTNOeTAwWVRJM0xUazROelF0WkRjNE56WXpOMlJtWWpaayJ9
+       - Click Next
+      - Route Tunnel : Edit public hostname for new Tunnel
+
+   7. > cloudflared update
+      > https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/run-tunnel/trycloudflare
+   8.
+
+   zoom > cloudflared tunnel
+- -->
+
+2. Stun Server : adjust STUN to get public IP address
+   iceServers: [
+   {
+   urls: [
+   "stun:stun.l.google.com:19302",
+   "stun:stun1.l.google.com:19302",
+   "stun:stun2.l.google.com:19302",
+   "stun:stun3.l.google.com:19302",
+   "stun:stun4.l.google.com:19302"
+   ]
+   }
+   ]
+
+3. XIRSYS - provides free STUN/TURN server
+
+   - This is alternative way to get STUN/Tunnel.
+     https://global.xirsys.net/dashboard/signin
+   - Getting Started Guide :
+     https://docs.xirsys.com/?pg=get-started
+   - About TURN(ice):
+     https://docs.xirsys.com/?pg=api-turn
+
+   - Services > create channel > click 'Static TURN Credentials' > get iceServers > Paste it into app.js(RTCPeerConnection)
