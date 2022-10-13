@@ -1,3 +1,4 @@
+doctype html
 html(lang="en")
     head
         meta(charset="UTF-8")
@@ -5,10 +6,9 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Noom
         link(rel="stylesheet", href="https://unpkg.com/mvp.css")
-    body 
-        header 
-            h1 InsertQuery 
-        main 
-            div#query
-
-        script(src="/public/js/app_query.js")
+    body
+        header
+            h1 Noom
+        main
+        script(src="/socket.io/socket.io.js") 
+        script(src="/public/app.js") 

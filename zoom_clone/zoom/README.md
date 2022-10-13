@@ -2,7 +2,17 @@
 
 Zoom Clone using NodeJS, WebRTC and Websockets.
 
-(app_query.js / query.pug / server_query.js -> 회사 작업임. 프로젝트와 관계없음)
+\*\* common file:
+'babel.config.json'
+'nodemon.json'
+'package-lock.json'
+'package.json'
+\*\* each set:
+('app.js' + 'home.pug' + 'server.js') -->latest
+('app02.js' + 'home02.pug' + 'server02wss.js')
+('app03.js' + 'home03.pug' + 'server03SocketIO.js')
+('app04.js' + 'home04.pug' + 'server04Video.js')
+('app05.js' + 'home05.pug' + 'server05WebRTC.js')
 
 #0 INTRODUCTION
 
@@ -125,7 +135,7 @@ nodemon.json -> src/server.js -> views/home.pug -> js/app.js
    zoom > cloudflared tunnel
 - -->
 
-2. Stun Server : adjust STUN to get public IP address
+2. Google Stun Server : adjust STUN to get public IP address
    iceServers: [
    {
    urls: [

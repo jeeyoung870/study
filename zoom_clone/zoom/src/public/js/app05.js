@@ -118,7 +118,6 @@ call.hidden = true;
 
 let roomName;
 let myPeerConnection;
-let myDataChannel;
 
 async function initCall() {
     welcome.hidden = true;
@@ -142,26 +141,13 @@ welcomeForm.addEventListener("submit", handleWelcomeSubmit);
 
 // Peer A (처음 참가한 소켓에서 실행)
 socket.on("welcome", async () => {    //같은 방에 상대 사용자가 입장할때마다 실행됨
-    // ---- dataChannel code start ----
-    myDataChannel = myPeerConnection.createDataChannel("chat");     //peer중 먼저 들어온 한쪽에서만 만들면 됨.
-    myDataChannel.addEventListener("message", (e) => console.log(e.data));
-    console.log("made data channel.");
-    // ---- dataChannel code end ----
     const offer = await myPeerConnection.createOffer();
     myPeerConnection.setLocalDescription(offer);
     console.log("send the offer");
     socket.emit("offer", offer, roomName);
 });
-// Peer B (나중 참가한 소켓에서 실행)
+// Peer B ((나중 참가한 소켓에서 실행))
 socket.on("offer", async (offer) => {
-    // ---- dataChannel code start ----
-    // dataChannel이 이미 생겨있는 상태.
-    myPeerConnection.addEventListener("datachannel", (event) => {
-        console.log("found data channel.");
-        myDataChannel = event.channel;
-        myDataChannel.addEventListener("message", (e) => console.log(e.data));
-    });
-    // ---- dataChannel code end ----
     console.log("received the offer");
     myPeerConnection.setRemoteDescription(offer);
     const answer = await myPeerConnection.createAnswer();

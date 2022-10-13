@@ -1,0 +1,84 @@
+[ Github Pages에 배포하기 ]
+
+1. 완성한 프로젝트를 Public repository에 새 branch로 push하기
+2. 프젝 git init경로에서 gh-pages 설치
+    zoom > npm install --save gh-pages
+3. package.json 파일의 "scripts":{} 안에
+    "predeploy": "npm run dev",
+    "deploy": "gh-pages -d build"
+    추가.
+4. 실행:
+    zoom > npm run deploy
+-> 안됨..
+---------------------------------------------------------
+
+1.
+package.json 파일의 "scripts":{} 안에
+"start": "node build/server.js",
+"build": "babel src -d build"
+추가
+> npm run dev (=save시 자동 새로고침되는 개발용 실행)
+> npm run build (src안의 파일들을 babel로 컴파일, build폴더에 결과물 생성)
+> npm run start (build폴더안의 server.js파일 실행-배포버전 실행임.)
+
+npm run build 후에 npm run start 실행해서 오류 없이 프로젝트 실행되는지 확인
+
+2. gh-pages 설치
+    zoom > npm install --save gh-pages
+
+3. package.json 수정:
+   1) package.json 파일의 "scripts":{} 안에
+    "deploy": "gh-pages -d build"
+    추가
+   2) "homepage" 필드값을 배포될 github page url로 수정. 없으면 추가
+   "homepage": "https://jeeyoung870.github.io/870/"
+
+-> 안됨.....
+---------------------------------------------------------
+
+
+1. 완성한 프로젝트를 Public repository에 새 branch(이름 gh-pages)로 push하기
+    (gh-pages라는 이름의 브랜치를 깃허브에서 배포용 브랜치로 인식함.)
+2. 
+
+---------------------------------------------------------
+
+
+[codesandbox.io로 배포하기]
+
+1) 프로젝트 그대로 import함(npm install은 다해줘야됨)
+
+2) Dependencies 설정
+
+express
+^4.17.1 (4.18.1)
+pug
+^3.0.2 (3.0.2)
+ws
+^7.5.3 (7.5.8)
+External resources
+
+3) External resources 설정
+External URL
+https://cdn.com/bootstrap.css
+
+Add Fonts:
+Google Fonts
+
+2,3번은 package.json 수정시 자동반영됨
+
+
+4) server.js 포트 수정
+server.listen(3000, handleListen);
+이 부분을
+server.listen(process.env.PORT, handleListen);
+위와 같이 수정함.
+
+app.set("views", __dirname + "/public/views");
+이 부분을
+app.set("views", __dirname + "/views");
+위와 같이 수정함. (public을 기본경로로 인식)
+
+5) codesandbox 컨테이너나 npm run dev 사용해 실행하기
+
+-> 성공!!
