@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>JSX와 babel적용</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+    const root = document.getElementById("root");
+
+    // JSX : javascript 확장 문법 
+    // 02_primate_React.html 에서 작성한 같은 기능을 JSX로 구현함
+    // JSX를 return하는 함수들을 'component' 컴포넌트라고 부른다!
+    /* 각 객체를 function으로 만들고, 그 함수명을 element로 사용할 수 있다.
+    함수 컴포넌트들의 이름은 항상 대문자!로 시작해야 한다. */
+    function Title1() {
+        return (
+            <h3 
+                id="title" onMouseEnter={ () => {console.log("mouse enter!");} } >
+                HELLO I'm a title!
+            </h3>
+        );
+    }
+    const Btn = () => (
+        <button 
+            style={ {backgroundColor:"magenta", color:"blue"} } 
+            onClick={ () => {console.log("I'm clicked");} } >
+            Click me!
+        </button>
+    );
+
+    const Container = () => (
+        <div>
+            <Title1/>
+            <Btn/>
+        </div>
+    );
+    
+    /* 위의 JSX문법은 기본적으로 브라우저가 이해할 수 없으므로,
+    React.createElement 형식으로 변환시켜주기 위해 Babel 변환기를 사용한다.
+    (babel 스크립트 링크 추가 + script type="text/babel" 수정)
+    */
+
+
+    ReactDOM.render(<Container/>, root);   //container를 root엘리먼트 안에 보여준다.(render)
+</script>
+</html>

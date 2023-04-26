@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>변하는 값(state) 사용</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+    const root = document.getElementById("root");
+
+    // JSX 에서 변수 사용하기
+    let counter = 0;
+    function countUp() {
+        counter += 1;
+        render(); // 변경사항을 UI에 적용(rerender)
+        // !!! 이경우 React는 element전부가 아니라 script에서 변경된 부분만을 update해준다 !!!
+        // Container 전체를 새로 만드맂 않음
+        // vanilla js와 달리 interactive한 지점임!!!!
+    }
+    const Container = () => (
+        <div>
+            <h3>Total Click : {counter}</h3>
+            <button onClick={countUp}>Click me!</button>
+        </div>
+    );
+
+    render();
+
+    function render() {
+        ReactDOM.render(<Container/>, root);   //container를 root엘리먼트 안에 보여준다.(render)
+    }
+</script>
+</html>

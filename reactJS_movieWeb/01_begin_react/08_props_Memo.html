@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Props and Memo</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+
+    function Minutes_Hours() {
+        const [amount, setAmount] = React.useState(0);
+        const [flipped, setFlipped] = React.useState(false);
+        const onChange = (event) => {  
+            setAmount(event.target.value);
+        }
+        const reset = () => { setAmount(0); }
+        const flip = () => { 
+            reset();
+            setFlipped(current => {return !current;});
+        }
+        return(
+            <div>
+                <div>
+                    <label htmlFor="min">Minutes</label>
+                    <input id="min" placeholder="Minutes" type="number" 
+                        value={flipped ? amount*60 : amount}
+                        onChange={onChange} /*사용자의 입력 감지*/ 
+                        disabled={flipped}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="hour">Hours</label>
+                    <input id="hour" placeholder="Hours" type="number" 
+                        value={flipped ? amount : Math.round(amount/60)}
+                        onChange={onChange}
+                        disabled={!flipped}
+                    />
+                </div>
+                <button onClick={reset}>Reset</button>
+                <button onClick={flip}>{flipped ? "enter Minutes" : "enter Hours"}</button>
+            </div>
+        );
+    }
+
+    function ColorBtn( {btnText, bgc} ){   //리액트 컴포넌트는 jsx로부터 인자를 전달받는다! 
+        // jsx에서 Btn( {btnText:"Continue", bgc:"skyblue"} ); <-이렇게 호출한것과 같음.
+        console.log(`${btnText} rendered`);
+        return (
+            <button
+                style={{
+                    backgroundColor: bgc,
+                    color: "white",
+                    padding: "10px 20px",
+                    border: 0,
+                    borderRadius: 10
+                }}
+            >{btnText}</button>
+        );
+    }
+    // 컴포넌트는 인자로 함수를 받을 수도 있다!!
+    function Btn( {text, onClickFunc} ){  
+        return (
+            <button
+                onClick={onClickFunc}
+                style={{
+                    backgroundColor: "indigo",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: 0,
+                    borderRadius: 10
+                }}
+            >{text}</button>
+        );
+    } 
+    /*!! React의 memorize 기능 : 
+    컴포넌트가 받는 인자가 바뀌지 않는 한, 해당 컴포넌트를 rerender하지 않는다.*/
+    const MemorizedBtn = React.memo(ColorBtn);
+
+    // 각기 다른 값을 넣고 App에서 컴포넌트를 재활용하려면? => element속성을 이용!(변수처럼사용가능)
+    // 컴포넌트 인자 이름은 jsx에서도 똑같아야 함.
+    function App() {
+        const [value, setValue] = React.useState("Save");
+        const changeValue = () => setValue("Revert");
+        return(
+            <div>
+                <MemorizedBtn btnText="Save Changes" bgc="skyblue"/>
+                <MemorizedBtn btnText="Continue" bgc="magenta"/>
+                <hr/>
+                <Btn text={value} onClickFunc={changeValue} />
+                {/*일반 엘리먼트의 onClick은 eventListener이고,
+                위의 onClickFunc는 eventListener가 아니라 컴포넌트의 인자이름이다!
+                */}
+            </div>
+        );
+    }
+
+    const root = document.getElementById("root");
+    ReactDOM.render(<App/>, root);   
+
+</script>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Props and Memo</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<!-- <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script> -->
+<script src="https://unpkg.com/react@17.0.2/umd/react.development.js "></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- prop-types.js 라이브러리 추가 -->
+<script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+<script type="text/babel">
+
+    function Btn( {text, onClickFunc, fontSize=20 } ){  //fontSize=20 > 인자로 받지 않는 변수의 디폴트값 설정할수있음.
+        return (
+            <button
+                onClick={onClickFunc}
+                style={{
+                    backgroundColor: "indigo",
+                    color: "white",
+                    padding: "10px 20px",
+                    border: 0,
+                    borderRadius: 10,
+                    fontSize: fontSize
+                }}
+            >{text}</button>
+        );
+    } 
+
+    const MemorizedBtn = React.memo(Btn);
+
+    // prop-types 사용 : 컴포넌트 인자 타입/유무 검사 기능 제공.
+    // Btn 컴포넌트에서 받는 인자들의 타입을 설정해서 잘못된 타입이 들어오면 브라우저 콘솔에 에러를 띄워줌
+    Btn.propTypes = {
+        text: PropTypes.string.isRequired,      // isRequired: 필수인자로 설정
+        onClickFunc: PropTypes.func, 
+        fontSize: PropTypes.number
+    };
+
+    function App() {
+        const [value, setValue] = React.useState("Save");
+        const changeValue = () => setValue("Revert");
+        return(
+            <div>
+                <Btn text={value} onClickFunc={changeValue} 
+                    fontSize={14} />
+                <Btn text={value} onClickFunc={3000} />
+                <Btn onClickFunc={changeValue}  />
+            </div>
+        );
+    }
+
+    const root = document.getElementById("root");
+    ReactDOM.render(<App/>, root);   
+
+</script>
+</html>

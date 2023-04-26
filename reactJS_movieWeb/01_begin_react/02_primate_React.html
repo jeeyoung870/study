@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>React의 원리</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script>
+    const root = document.getElementById("root");
+    // ("element태그명", {properties}, "content") 세번째 인자 element,배열 가능
+    // properties로는 eventListener등록도 가능함.
+    // event이름 표기 주의: onclick(X) / onClick(O)
+    const h3 = React.createElement("h3"
+        , {
+            id:"firstSpan", style:{color:"blue", backgroundColor:"yellow"}
+            , onMouseEnter: () => {console.log("mouse enter!");}
+        }
+        , "HELLO!"
+    );
+    const btn = React.createElement("button"
+        , {
+            onClick: () => {console.log("I'm clicked");} 
+            , style: {backgroundColor:"magenta"}
+        }
+        , "Click me!"
+    );
+    const container = React.createElement("div", null, [h3, btn]);
+
+    ReactDOM.render(container, root);   //container를 root엘리먼트 안에 보여준다.(render)
+</script>
+</html>

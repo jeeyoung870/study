@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Unit Converter</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+
+    function App() {
+        const [amount, setAmount] = React.useState(0);
+        const [flipped, setFlipped] = React.useState(false);
+        const onChange = (event) => {  //jsx에서도 js처럼 유사이벤트 객체 접근 가능!!
+            // console.log(event);
+            setAmount(event.target.value);
+        }
+        const reset = () => { setAmount(0); }
+        const flip = () => { 
+            reset();
+            setFlipped(current => {return !current;});
+        }
+        return(
+            /*
+            <div>
+                <h1 class="hi">Unit Converter</h1>
+                <label for="min">Minutes</label>
+                <input id="min" placeholder="Minutes" type="number" />
+            </div>
+            위의 코드는 기존 html로는 문제가 없지만, JSX에서는 for/class와 같은 엘리먼트 속성들을 사용할 수 없다.
+            -> 자바스크립트 코드 에서 이미 선점된 명령어이기 때문이다!!
+                그러므로 아래처럼 for는 htmlFor, class는 className 속성을 써줘야 함.
+            */
+            <div>
+                <h1 className="hi">Unit Converter</h1>
+
+                <div>
+                    <label htmlFor="min">Minutes</label>
+                    <input id="min" placeholder="Minutes" type="number" 
+                        value={flipped ? amount*60 : amount}
+                        onChange={onChange} /*사용자의 입력 감지*/ 
+                        disabled={flipped}
+                    />
+                </div>
+                <div>
+                    <label htmlFor="hour">Hours</label>
+                    <input id="hour" placeholder="Hours" type="number" 
+                        value={flipped ? amount : Math.round(amount/60)}
+                        onChange={onChange}
+                        disabled={!flipped}
+                    />
+                </div>
+                <button onClick={reset}>Reset</button>
+                <button onClick={flip}>{flipped ? "enter Minutes" : "enter Hours"}</button>
+            </div>
+        );
+    }
+
+    const root = document.getElementById("root");
+    ReactDOM.render(<App/>, root);   
+
+</script>
+</html>

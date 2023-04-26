@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>React.useState()</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+    const root = document.getElementById("root");
+
+    function App() {
+        // React.useState(default_value) ->react 제공 state 기능 사용
+        const data = React.useState(0);
+        console.log(data);
+        //콘솔로 보면 2개짜리 array를 반환함. [기본값, 값변경함수] 임.
+        // 그러므로 다음과 같이 변수지정할 수 있음.
+        const [counter, modifier] = data;
+        const onClick = () => {
+            // modifier(counter+1);
+            modifier( (currentVal) => {return currentVal + 1;} );  //윗줄코드와 같은기능이나 더 안전한 방법임.
+            // react에서 제공하는 modifier함수 사용시 ()안의 값으로 counter를 업데이트,
+            // 동시에 rerender(ReactDOM.render(<App/>, root);)까지 자동으로 해서 UI에 반영해줌.
+        }
+        return(
+            <div>
+                <h3>Total Click : {counter}</h3>
+                <button onClick={onClick}>Click me!</button>
+            </div>
+        );
+    }
+
+    ReactDOM.render(<App/>, root);   
+/*
+[ modifier() 함수로 state값을 지정하는 2가지 방법 ]
+1) modifier(999); 와 같이 직접 값을 지정한다. 
+2) modifier에 함수를 전달해, 인자로 들어오는 현재값을 직접 가공한다.
+
+결론 : modifier 함수 사용시, function App() 코드가 재실행되어, App컴포넌트가 재생성된다.
+       다만, state인 counter만 변경값으로 적용된다!
+*/
+</script>
+</html>

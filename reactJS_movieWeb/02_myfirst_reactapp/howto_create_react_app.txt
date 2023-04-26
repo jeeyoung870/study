@@ -1,0 +1,21 @@
+[ create-react-app ]
+리액트 앱을 만들어주는 모듈
+웹사이트 publish, 서버접근, 코드변경시 자동새로고침, css즉각적용 등 기능 제공.
+
+필요셋팅 : 
+1) node.js 설치 (npx 접근가능한지)
+    확인 커맨드:
+    >node -v
+    >npx
+2) npx 커맨드로 리액트 앱 생성하기 (02_myfirst_reactapp 이름의 패키지가 자동생성됨)
+    >npx create-react-app 02_myfirst_reactapp
+3) 02_myfirst_reactapp 디렉토리에서 앱 실행
+    (커맨드 script는 package.json > "scripts" 확인.)
+    >npm start
+
+[ 구조 ]
+- index.js / index.html
+    index.js는 개발자가 작성한 코드(컴포넌트)들을 index.html 의 root div 내부에 렌더한다. 
+    App.js 처럼 따로 컴포넌트만 만들어서 index.js에 import 해주면 됨.
+
+결론 : src하위에는 App.js, index.js 만 있으면 리액트 앱으로써 동작한다.
