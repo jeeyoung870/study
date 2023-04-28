@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyMomentum</title>
+    <!-- <link rel="stylesheet" href="https://unpkg.com/mvp.css"> -->
+    <link rel="stylesheet" href="src/css/style.css">
+</head>
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+    <section>
+        <div class="upper">
+            <div id="links">
+                <span>Links</span>
+            </div>
+            <div id="linkBox" class="hidden1">
+                <a href="chrome-search://local-ntp/local-ntp.html">Chrome Tab</a><br/>
+                <a href="chrome://apps/">Apps</a>
+            </div>
+            <div></div>
+            <div id="geoWeather">
+                <span id="weather">weather</span> <span id="temp">temp</span>
+                <div id="cityName">cityName</div>
+            </div>
+        </div>
+        <div id="contents">
+            <div id="clock">00:00:00</div>
+            <div id="greeting">One step at a time.</div>
+            <form id="usernameForm">
+                <span>What is your name?</span><br>
+                <input type="text">
+            </form>
+
+            <div id="mainFocus">
+                <form>
+                    <span>What is your main focus for today?</span><br>
+                    <input type="text">
+                </form>
+                <div id="todaysFocus">
+                    <span style="font-size: 22px; font-weight: bold;">TODAY</span><br>
+                    <input type="checkbox" id="mainFocusCheckbox">
+                    <span>todaysFocus</span>
+                    <button>X</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div id="quoteBox">
+            <span>Quote</span>
+            <span class="hidden1">author</span>
+        </div>
+    </footer>
+    <div id="todoBtn">
+        <span>Todo</span>
+    </div>
+    <div id="todoListBox" class="hidden1">Today
+        <ul id="todo-list"></ul>
+        <form id="todo-form" action="">
+            <input type="text" placeholder="New ToDo" required/>
+        </form>
+    </div>
+
+    <script src="src/js/01_background.js"></script>
+    <script src="src/js/02_clock.js"></script>
+    <script src="src/js/03_todo.js"></script>
+    <script src="src/js/04_quotes.js"></script>
+    <script src="src/js/05_greeting.js"></script>
+    <script src="src/js/06_weather.js"></script>
+</body>
+</html>
