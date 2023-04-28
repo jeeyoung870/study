@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Vanilla Challenge</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
+    <link rel="stylesheet" href="src/style.css">
+  </head>
+
+  <body>
+    <h1>Random Number Game</h1>
+    <form id="numberForm">
+      <h3>Generate a number between 0 and</h3>
+      <input id="maxNum" type="number" required min="0" />
+      <h3>Guess the Number</h3>
+      <input id="guess" type="number" required min="0" />
+      <button>play!</button>
+    </form>
+    <div class="hidden">
+      <span ></span>
+      <br>
+      <span ></span>
+    </div>
+    
+    <script src="src/index.js"></script>
+  </body>
+</html>
