@@ -1,81 +1,125 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta property="og:title" content="Jeeyoung Park">
-    <meta property="og:description" content="바다를 사랑하는 홍길동입니다.">
-    <meta property="og:image" content="https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/free_myprofile/%EA%B7%B8%EB%9D%BC%EB%8D%B0%EC%9D%B4%EC%85%98/%EB%B0%94%EB%8B%A4.png"> -->
+    <link rel="stylesheet" href="./css/profile.css">
+    <!-- 부트스트랩 CDN 링크 추가 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Jeeyoung Park</title>
-    <style>
-        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-        * {
-            font-family: "Pretendard",serif;
-        }
-        body {
-            background: linear-gradient(180deg, #422B83 0%, #4A629F 100%);
-            height: 100vh;
-        }
-        .profile {
-            width: 100px;
-            height: 100px;
-            border-radius: 100%;
-            background-image: url('https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/free_myprofile/%EA%B7%B8%EB%9D%BC%EB%8D%B0%EC%9D%B4%EC%85%98/%EB%B0%94%EB%8B%A4.png');
-            background-position: center;
-            background-size: cover;
-        }
-        .main {
-            color : #FFFFFF;
-            font-size: 18px;
-            size : 20px;
-            margin-top: 30px;
-            margin-bottom: 10px;
-        }
-        .sub {
-            color : #FFFFFF;
-            font-size: 14px;
-            font-weight: 400;
-            size : 14px;
-            margin-top: 0px;
-            margin-bottom: 30px;
-        }
-        .wrap {
-            width: 300px;
-            margin: 30px auto 0px auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .wrap > a {
-            width: 320px;
-            height: 59px;
-            border-radius: 5px;
-            background-color: white;
-            margin-bottom: 16px;
-            font-size: 16px;
-            font-weight: bold;
-            color:#382863;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            border: 1px solid #353432;
-        }
-    </style>
 </head>
+
+<script>
+    const cld_notion_url = 'https://exultant-hydrangea-4ef.notion.site/Charlendar-4eef9930b6eb4eaba54e3986590767a5';
+    const cld_url = 'https://charlendar.fly.dev/welcome';
+    const zoom_url = 'https://codesandbox.io/s/jy870-webrtc-challenge-i4p7bz?file=/src/server.js';
+    const zoom_github = 'https://github.com/jeeyoung870/study/tree/nomadCoders/webSocket_zoom';
+
+    function toggleCards() {
+        var cards = document.getElementById("card-container");
+        if (cards.classList.contains("show")) {
+            cards.classList.remove("show");
+        } else {
+            cards.classList.add("show");
+        }
+    }
+
+    const charlendarStack = [
+        'Node.js','ExpressJS','React','JSX','axios','OAuth2','PostgreSQL','Docker','Heroku','fly.io','Git'
+    ];
+    const zoomCloneStack = [
+        'Socket.IO','WebRTC','WebSocket','STUN','Node.js','ExpressJS','Pug','nodemon','Babel','JavaScript'
+    ];
+</script>
+
 <body>
-    <div class="wrap">
-        <div class="profile"></div>
-        <h1 class="main">Jeeyoung Park</h1>
-        <p class="sub">안녕하세요! S/W개발자 박지영입니다.</p>
-        <a style="background-color: #F3EDFF;" target="_blank" href="./박지영_이력서.pdf">이력서</a>
-        <a target="_blank" href="https://spartacodingclub.kr/community/blog">블로그</a>
-        <a style="background-color: #F3EDFF;" target="_blank" href="https://spartacodingclub.kr/">페이스북</a>
-        <a target="_blank" href="./박지영_이력서.pdf">이력서</a>
-        <a style="background-color: #F3EDFF;" target="_blank" href="./momentum/index.html">momentum clone</a>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-8 col-md-6">
+                <div class="wrap text-center">
+                    <div class="profile"></div>
+                    <h1 class="main">Jeeyoung Park</h1>
+                    <p class="sub">안녕하세요! 금방 크는 S/W개발자 박지영입니다:)</p>
+                    <a class="btn btn-primary btn-lg" target="_blank" href="https://spartacodingclub.kr/">페이스북</a>
+                    <a id="portfolio-btn" class="btn btn-primary btn-lg" href="#"
+                        onclick="toggleCards()">포트폴리오
+                    </a>
+                    <div id="card-container" >
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <img src="./css/img/favicon.png" alt="" class="mr-2" style="height: 1.25rem;">Charlendar
+                                </h5>
+                                <p class="card-text text-left">
+                                    투자와 자연스럽게 친해질 수 있는 차트+캘린더 웹 앱. (클라우드 배포)
+                                    <div class="d-flex">
+                                        <button class="btn btn-primary mr-2 btn-block"
+                                            onclick="window.open(cld_url)">챌린더 웹</button> 
+                                        <button class="btn btn-primary btn-block" style="margin-top:0;"
+                                            onclick="window.open(cld_notion_url)">회의록&개발일지</button>
+                                    </div>
+                                    <h6 class="text-left" >주요 기능</h6>
+                                    <li class="card-text text-left">경제 일기장과 3대지수의 일별 차트, investing.com의 중요 발표일정 정보 제공.</li>
+                                    <li class="card-text text-left">유저의 흥미를 위한 bull/bear투표기능 제공.</li>
+                                    <li class="card-text text-left">영업일마다 해당일자의 차트정보 입수, 유저 투표 채점 및 랭킹갱신 schedule 실행.</li>
+                                </p>
+                                <div class="d-flex flex-wrap">
+                                    <script>
+                                      charlendarStack.forEach(stack => {
+                                        document.write('<span class="badge badge-custom font-weight-normal m-1">' + stack + '</span>');
+                                      });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <img src="./css/img/zoom_icon.png" alt="" class="mr-2" style="height: 1.25rem;">Zoom Clone
+                                </h5>
+                                <p class="card-text text-left">
+                                    WebSocket 기술을 이용한 실시간 채팅 및 1:1화상/음성 통화를 구현한 토이프로젝트.
+                                    <div class="d-flex">
+                                        <button class="btn btn-primary mr-2 btn-block"
+                                            onclick="window.open(zoom_url)">codesandbox</button> 
+                                        <button class="btn btn-primary btn-block" style="margin-top:0;"
+                                            onclick="window.open(zoom_github)">github</button>
+                                    </div>
+                                    <h6 class="text-left" >주요 기능</h6>
+                                    <li class="card-text text-left">경제 일기장과 3대지수의 일별 차트, investing.com의 중요 발표일정 정보 제공.</li>
+                                    <li class="card-text text-left">유저의 흥미를 위한 bull/bear투표기능 제공.</li>
+                                    <li class="card-text text-left">영업일마다 해당일자의 차트정보 입수, 유저 투표 채점 및 랭킹갱신 schedule 실행.</li>
+                                </p>
+                                <div class="d-flex flex-wrap">
+                                    <script>
+                                      zoomCloneStack.forEach(stack => {
+                                        document.write('<span class="badge badge-custom font-weight-normal m-1">' + stack + '</span>');
+                                      });
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">To Do 웹앱</h5>
+                                <p class="card-text text-left">
+                                    이 카드는 포트폴리오 버튼을 클릭했을 때 나타납니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary btn-lg" target="_blank" href="./momentum/index.html">Momentum clone</a>
+                    <a class="btn btn-primary btn-lg" target="_blank" href="./박지영_이력서.pdf">이력서</a>
+                    <a class="btn btn-primary btn-lg" target="_blank" href="">링크</a>
+
+                    
+                </div>
+            </div>
+        </div>
     </div>
 </body>
+
 </html>
