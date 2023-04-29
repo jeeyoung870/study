@@ -1,0 +1,105 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+* {
+    font-family: "Pretendard", serif;
+}
+/* Webkit 브라우저 스크롤바 숨기기 */
+::-webkit-scrollbar {
+    display: none;
+}
+body {
+    background: linear-gradient(180deg, #422B83 0%, #4A629F 50%, #422B83 100%);
+    height: 100vh;
+}
+
+.profile {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    background-image: url('https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/free_myprofile/%EA%B7%B8%EB%9D%BC%EB%8D%B0%EC%9D%B4%EC%85%98/%EB%B0%94%EB%8B%A4.png');
+    background-position: center;
+    background-size: cover;
+}
+
+.main {
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: bold;
+    size: 20px;
+    margin-top: 30px;
+    margin-bottom: 7px;
+}
+
+.sub {
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 300;
+    size: 14px;
+    margin-top: 0px;
+    margin-bottom: 30px;
+}
+
+.wrap {
+    width: 300px;
+    margin: 30px auto 0px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrap>a {
+    width: 320px;
+    height: 59px;
+    border-radius: 5px;
+    background-color: #F3EDFF;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #382863;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    border: none;
+}
+
+.wrap>a:hover {
+    background-color: #382863;
+    color: #F3EDFF;
+    border-color: none;
+}
+
+#card-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+/* 카드 컨테이너가 나타날 때 slide 효과 */
+#card-container.show {
+    max-height: 1000px;
+}
+.card {
+    margin-bottom: 16px;
+}
+.card-body > * {
+    color: #382863;
+}
+.card-text {
+    font-size: 12px;
+}
+div.d-flex button {
+    font-size: 12px;
+    font-weight: 500;
+    height:min-content;
+    background-color:   #7b64ee;
+    color: #F3EDFF;
+    border: none;
+    margin-bottom: 1rem;
+    margin-top: 0%;
+}
+.badge-custom {
+    background-color: #422B83;
+    color: #F3EDFF;
+}
