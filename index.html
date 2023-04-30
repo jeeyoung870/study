@@ -17,6 +17,10 @@
     const cld_url = 'https://charlendar.fly.dev/welcome';
     const zoom_url = 'https://codesandbox.io/s/jy870-webrtc-challenge-i4p7bz?file=/src/server.js';
     const zoom_github = 'https://github.com/jeeyoung870/study/tree/nomadCoders/webSocket_zoom';
+    const momentum_url = './momentum/index.html';
+    const momentum_github = 'https://github.com/jeeyoung870/study/tree/nomadCoders/vanillaJS_momentum/challenge/last-assignment/myMomentum';
+    const linkedIn_url = 'https://www.linkedin.com/in/870/';
+    const github_url = 'https://github.com/jeeyoung870?tab=repositories';
 
     function toggleCards() {
         var cards = document.getElementById("card-container");
@@ -24,6 +28,25 @@
             cards.classList.remove("show");
         } else {
             cards.classList.add("show");
+        }
+    }
+    function toggleLinks() {
+        var linkCard = document.getElementById("link-container");
+        if (linkCard.classList.contains("show")) {
+            linkCard.classList.remove("show");
+        } else {
+            linkCard.classList.add("show");
+        }
+    }
+    function toggleDetail(detlId) {
+        const detail = document.getElementById(detlId+'_detl');
+        const btn = document.getElementById(detlId+'_detl_btn');
+        if (detail.style.display === 'none') {
+            detail.style.display = 'block';
+            btn.innerHTML = '▼ 접기';
+        } else {
+            detail.style.display = 'none';
+            btn.innerHTML = '▶ 상세보기';
         }
     }
 
@@ -46,8 +69,7 @@
                     <div class="profile"></div>
                     <h1 class="main">Jeeyoung Park</h1>
                     <p class="sub">안녕하세요! 금방 크는 S/W개발자 박지영입니다:)</p>
-                    <a class="btn btn-primary btn-lg" target="_blank" href="https://spartacodingclub.kr/">페이스북</a>
-                    <a id="portfolio-btn" class="btn btn-primary btn-lg" href="#"
+                    <a  class="btn btn-primary btn-lg" href="javascript:;"
                         onclick="toggleCards()">포트폴리오
                     </a>
                     <div id="card-container" >
@@ -56,7 +78,7 @@
                                 <h5 class="card-title">
                                     <img src="./css/img/favicon.png" alt="" class="mr-2" style="height: 1.25rem;">Charlendar
                                 </h5>
-                                <p class="card-text text-left">
+                                <p class="card-text text-left" >
                                     투자와 자연스럽게 친해질 수 있는 차트+캘린더 웹 앱. (클라우드 배포)
                                     <div class="d-flex">
                                         <button class="btn btn-primary mr-2 btn-block"
@@ -64,18 +86,22 @@
                                         <button class="btn btn-primary btn-block" style="margin-top:0;"
                                             onclick="window.open(cld_notion_url)">회의록&개발일지</button>
                                     </div>
-                                    <h6 class="text-left" >주요 기능</h6>
-                                    <li class="card-text text-left">경제 일기장과 3대지수의 일별 차트, investing.com의 중요 발표일정 정보 제공.</li>
-                                    <li class="card-text text-left">유저의 흥미를 위한 bull/bear투표기능 제공.</li>
-                                    <li class="card-text text-left">영업일마다 해당일자의 차트정보 입수, 유저 투표 채점 및 랭킹갱신 schedule 실행.</li>
+                                    <a id="cld_detl_btn" class="card-text" href="javascript:;" onclick="toggleDetail('cld')" >
+                                        ▶ 상세보기
+                                    </a>
+                                    <div id="cld_detl" style="display:none;">
+                                        <li class="card-text text-left">경제 일기장과 3대지수의 일별 차트, investing.com의 중요 발표일정 정보 제공.</li>
+                                        <li class="card-text text-left">유저의 흥미를 위한 bull/bear투표기능 제공.</li>
+                                        <li class="card-text text-left">영업일마다 해당일자의 차트정보 입수, 유저 투표 채점 및 랭킹갱신 schedule 실행.</li>
+                                        <div class="d-flex flex-wrap">
+                                            <script>
+                                            charlendarStack.forEach(stack => {
+                                                document.write('<span class="badge badge-custom font-weight-normal m-1">' + stack + '</span>');
+                                            });
+                                            </script>
+                                        </div>
+                                    </div>
                                 </p>
-                                <div class="d-flex flex-wrap">
-                                    <script>
-                                      charlendarStack.forEach(stack => {
-                                        document.write('<span class="badge badge-custom font-weight-normal m-1">' + stack + '</span>');
-                                      });
-                                    </script>
-                                </div>
                             </div>
                         </div>
                         <div class="card">
@@ -91,34 +117,74 @@
                                         <button class="btn btn-primary btn-block" style="margin-top:0;"
                                             onclick="window.open(zoom_github)">github</button>
                                     </div>
-                                    <h6 class="text-left" >주요 기능</h6>
-                                    <li class="card-text text-left">경제 일기장과 3대지수의 일별 차트, investing.com의 중요 발표일정 정보 제공.</li>
-                                    <li class="card-text text-left">유저의 흥미를 위한 bull/bear투표기능 제공.</li>
-                                    <li class="card-text text-left">영업일마다 해당일자의 차트정보 입수, 유저 투표 채점 및 랭킹갱신 schedule 실행.</li>
+                                    <a id="zoom_detl_btn" class="card-text" href="javascript:;" onclick="toggleDetail('zoom')" >
+                                        ▶ 상세보기
+                                    </a>
+                                    <div id="zoom_detl" style="display:none;">
+                                        <p class="card-text text-left">
+                                            웹소켓을 처음 접하며 공부한 내용과 적용과정, 그리고 시행착오를 상세하게 문서로 기록했습니다. (깃헙 참조)
+                                        </p>
+                                        <div class="d-flex flex-wrap">
+                                            <script>
+                                              zoomCloneStack.forEach(stack => {
+                                                document.write('<span class="badge badge-custom font-weight-normal m-1">' + stack + '</span>');
+                                              });
+                                            </script>
+                                        </div>
+                                    </div>
                                 </p>
-                                <div class="d-flex flex-wrap">
-                                    <script>
-                                      zoomCloneStack.forEach(stack => {
-                                        document.write('<span class="badge badge-custom font-weight-normal m-1">' + stack + '</span>');
-                                      });
-                                    </script>
-                                </div>
                             </div>
                         </div>
-                        <div class="card">
+                        <div class = "card">
                             <div class="card-body">
-                                <h5 class="card-title">To Do 웹앱</h5>
+                                <h5 class="card-title">
+                                    <img src="./css/img/momentum_icon.svg" alt="" class="mr-2" style="height: 1.25rem;">My Momentum
+                                </h5>
                                 <p class="card-text text-left">
-                                    이 카드는 포트폴리오 버튼을 클릭했을 때 나타납니다.
+                                    팍팍한 업무시간에 감성 한 스푼 얹어주는 동기부여 to-do 리스트 pc웹 앱.
+                                    <div class="d-flex">
+                                        <button class="btn btn-primary mr-2 btn-block"
+                                            onclick="window.open(momentum_url)">My Momentum</button> 
+                                        <button class="btn btn-primary btn-block" style="margin-top:0;"
+                                            onclick="window.open(momentum_github)">github</button>
+                                    </div>
+                                    <a id="momentum_detl_btn" class="card-text" href="javascript:;" onclick="toggleDetail('momentum')" >
+                                        ▶ 상세보기
+                                    </a>
+                                    <div id="momentum_detl" style="display:none;">
+                                        <li class="card-text text-left">localStorage를 이용한 로그인, to-do리스트 저장 기능.</li>
+                                        <li class="card-text text-left">시계, 랜덤 배경화면</li>
+                                        <li class="card-text text-left">시간대에 따라 다른 인삿말과 한줄명언.</li>
+                                        <div class="d-flex flex-wrap">
+                                            <script>
+                                              momentumStack.forEach(stack => {
+                                                document.write('<span class="badge badge-custom font-weight-normal m-1">' + stack + '</span>');
+                                              });
+                                            </script>
+                                        </div>
+                                    </div>
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary btn-lg" target="_blank" href="./momentum/index.html">Momentum clone</a>
                     <a class="btn btn-primary btn-lg" target="_blank" href="./ParkJeeYoung_resume.pdf">이력서</a>
-                    <a class="btn btn-primary btn-lg" target="_blank" href="">링크</a>
-
-                    
+                    <a class="btn btn-primary btn-lg" href="javascript:;"
+                        onclick="toggleLinks()">링크
+                    </a>
+                    <div id="link-container" >
+                        <div class="card">
+                            <div class="card-body" style="width: 294.8px; height: 100px;">
+                                <p class="card-text text-left" >
+                                    <div class="d-flex">
+                                        <button class="btn btn-primary mr-2 btn-block"
+                                            onclick="window.open(github_url)">github</button> 
+                                        <button class="btn btn-primary btn-block" style="margin-top:0;"
+                                            onclick="window.open(linkedIn_url)">LinkedIn</button>
+                                    </div>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
