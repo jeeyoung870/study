@@ -4,11 +4,12 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Noom
+        title Zoom
         link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+        script(src="/socket.io/socket.io.js")
     body 
         header 
-            h1 Noom 
+            h1 Zoom Clone 
         main 
             div#welcome
                 form
@@ -17,9 +18,9 @@ html(lang="en")
             div#call
                 div#myStream
                     video#myFace(autoplay, playsinline, width="50%", height="400")
+                    br
                     button#mute Mute
                     button#camera Camera Off
                     select#cameras
                 video#peerFace(autoplay, playsinline, width="50%", height="400")
-        script(src="/socket.io/socket.io.js")
-        script(src="/public/js/app.js") 
+        script(type='text/javascript' src="/public/js/app.js") 
