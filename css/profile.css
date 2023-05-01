@@ -16,7 +16,8 @@ body {
     width: 100px;
     height: 100px;
     border-radius: 100%;
-    background-image: url('https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/free_myprofile/%EA%B7%B8%EB%9D%BC%EB%8D%B0%EC%9D%B4%EC%85%98/%EB%B0%94%EB%8B%A4.png');
+    /* background-image: url('https://s3.ap-northeast-2.amazonaws.com/materials.spartacodingclub.kr/free_myprofile/%EA%B7%B8%EB%9D%BC%EB%8D%B0%EC%9D%B4%EC%85%98/%EB%B0%94%EB%8B%A4.png'); */
+    background-image:url('./img/profile_small.png');
     background-position: center;
     background-size: cover;
 }
@@ -36,9 +37,16 @@ body {
     font-weight: 300;
     size: 14px;
     margin-top: 0px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 }
 
+.mykeywords {
+    margin-bottom: 30px;
+}
+.badge-custom2 {
+    background-color: #e0c8ff;
+    color: #382863;
+}
 .wrap {
     width: 300px;
     margin: 30px auto 0px auto;
@@ -71,13 +79,13 @@ body {
     border-color: none;
 }
 
-#card-container, #link-container {
+#card-container, #link-container, #work-container {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.5s ease-in-out;
 }
 /* 카드 컨테이너가 나타날 때 slide 효과 */
-#card-container.show, #link-container.show {
+#card-container.show, #link-container.show, #work-container.show {
     max-height: 1500px;
 }
 .card {
