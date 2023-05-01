@@ -86,7 +86,7 @@ body {
 }
 /* 카드 컨테이너가 나타날 때 slide 효과 */
 #card-container.show, #link-container.show, #work-container.show {
-    max-height: 1500px;
+    max-height: 2000px;
 }
 .card {
     margin-bottom: 16px;
