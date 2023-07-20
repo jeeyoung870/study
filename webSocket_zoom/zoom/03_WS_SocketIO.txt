@@ -1,97 +1,102 @@
 [ HTTP vs WebSocket ]
-공통점 : 둘다 protocol임
-- HTTP : request <-> response 로 이루어짐.
-    stateless(실시간이 아님.)
-    respond 후에 user를 기억하지 못함.
-- WebSocket : 지원만 된다면 http대신 wss 사용가능
-    브라우저 <-connection-> 서버 (bi-directional)
-    혹은 서버 <-> 서버도 가능!
-    connection 성립시 real-time communication 가능
-    user 기억함
-    요청 기다리지 않고 서버에서 정보 송신 가능
-    브라우저 내장 WebSocket API 사용가능
-
-[ ws : WebSocket Library for nodeJS ]
-html의 addEventListener 처럼 비슷하게 사용할 수 있다.
-event가 발생하고, 처리할 함수를 지정함.
-ex) back의 경우 : socket.on("connection", (socket)=>{});
-    front의 경우 : socket.addEventListener("open", callback);
-
-동작순서에 유의한다 : 
-웹소켓 연결시> wss.on("connection", (socket)=>{}); 실행
-            socket.addEventListener("open", callback); 실행
-server.js> socket.send("hello!"); 전송
-app.js> socket.addEventListener("message", callback); 실행
-연결 해제시> socket.addEventListener("message", callback); 실행
-
-** 각각 다른 브라우저에서 http://localhost:3000에 접속할경우,
-    브라우저들은 한 서버와 연결되지만, 브라우저끼리는 연결되지 않아서 
-    각각이 보낸 메세지를 공유할 수 없다.
-    이를 위해 const sockets = []; 을 선언해줌
-
-** app.js 에서 handleSubmit()과 handleNickSubmit()에서는 둘다 socket.send()를 사용한다.
-    하나는 메시지고 하나는 닉네임을 전송하지만 서버에서는 이 둘을 모두 on("message" 로 받기 때문에
-    뭐가 뭔지 구별해낼 수 없다.
-    그러므로 send시의 인자는 type:payload 값을 가지는 json객체를 stringify 한것을 넣는다.
+Commonality: Both are protocols
+- HTTP: Consists of request <-> response. Stateless (not real-time).
+	Unable to remember the user after responding.
+- WebSocket: If supported, can use 'wss' instead of 'http'.
+	Browser <-connection-> Server (bi-directional), Or server <-> server is also possible! 
+	Real-time communication possible upon connection establishment.
+	Remembers the user.
+	Can send information from the server without waiting for a request.
+	Built-in WebSocket API can be used in the browser.
 
 
-[ SocketIO : WebSocket Framework ]
-- SocketIO : WebSocket을 '사용'하는 real-time, event기반 소통을 제공함
-        브라우저의 WebSocket사용이 불가해도 정상가동함(신뢰도높음)
-        실시간 통신에 필요한 여러 기능들이 이미 만들어져 있어 편리함.
-SocketIO 서버에 연결하면
-http://localhost:3000/socket.io/socket.io.js
-링크에 접속 가능해진다.
-브라우저의 WebSocket보다 SocketIO 기능이 더 많기 때문에 브라우저(front)에도 SocketIO를 설치해야 한다.
-그러므로 위 url 포트이후경로를 view파일에 script 추가해줌 ( script(src="/socket.io/socket.io.js") )
 
-- 특징/장점 : 
-    1. ws와 달리 event명을 직접지정 가능하고, Object객체를 전달할 수 있다. emit() 함수
-        전달 객체도 여러 개가 가능하다. 무제한.
-    2. front(app.js) 의 socket.emit()함수의 마지막 인자로 콜백함수를 바인딩할 수 있다. 
-        (Optional 이지만 꼭 마지막에 넣어야 함.)
-        이 콜백함수를 server.js의 on메소드에서 호출하면(done();), 이는 백이 아닌 프론트(app.js)에서 실행된다.
-    3. 서버-브라우저 연결이 끊기면 즉시 가동중인 다른 io서버를 찾고, 실패시 브라우저상에 error를 발생시킨다.
-        몇초 간격으로 계속 시도하기 때문에 서버run 해주면 error가 멈춘다.
-    4. 자체id(socket.id), 자체 room을 제공함. socket.rooms / socket.join("방이름");
+[ ws: WebSocket Library for nodeJS ]
+- It can be used similarly to the addEventListener in HTML.
+- Events are triggered, and the function to handle them is specified.
+ex) back-end -> socket.on("connection", (socket)=>{});
+    front-end -> socket.addEventListener("open", callback);
 
-- 기능 : 
-1. 방 입장
-    socket.join("방이름"); / socket.join(["방이름1", "방이름2"]); 복수참여
-2. 방 퇴장
-    socket.leave("방이름"); / socket.leave(["방이름1", "방이름2"]);
-3-1. !나 이외!의 방'전체'에 메시지/메시지+event 보내기, '다른사용자'에게 private으로 보내기
-    socket.to("방이름"); / socket.to(["방이름1", "방이름2"]);
-    socket.to("방이름").emit("eventName", { some:"data" });
-    socket.to( /*특정사용자소켓id*/ ).emit("hey");
-3-2. 서버에 연결된 모든 소켓에게 event 전송하기
-    io.sockets.emit("event", {some:"data"});
-4. 사용자소켓 연결 해제시(그러나 아직 방에 있는상태) 실행되는 event
-    "disconnecting"
-5. 특정 방 모든소켓/특정소켓 을 강제로 다른 방에 참여하게 만들기 (server.js에서 가능)
-    io.in("room1").socketJoin(["room2", "room3"]);
-    io.in(theSocketId).socketJoin("room1");
-6. socket.rooms와 io.sockets.adapter.rooms 는 다름.
-    socket.rooms : 현재 접속한 사용자(브라우저)가 속한 방 리턴(Set객체)
-    io.sockets.adapter.rooms : socketIO에 연결된 모든 방(key)과 거기 속한 id집합인 Set객체(value)를 리턴.(map객체)
-    io.sockets.adapter.sids : socketIO에 연결된 모든 id(key), (id,방이름 Set)(value)를 리턴 (map객체)
-    ** adapter.rooms 는 public + priate // adapter.sids 는 private only
-        rooms의 key = 모든 room id
-        sids의 key = 모든 socket id (= 모든 private room id)
-        원래부터 소켓이 가지고 있는 private방의 id는 해당소켓의 id와 같음.
+- Be aware of the order of execution:
+When WebSocket connects > wss.on("connection", (socket)=>{}); is executed
+                        socket.addEventListener("open", callback); is executed
+server.js > socket.send("hello!");  is sent.
+app.js > socket.addEventListener("message", callback);  is executed.
+When disconnected > socket.addEventListener("message", callback);  is executed.
 
-*** javascript는 map객체 forEach 시 인자 순서가 (val, key) 임. 왜 그런지?모르겠음 짜증나게..
+** When connecting to http://localhost:3000 from different browsers,
+    the browsers are connected to a single server, but they are not connected to each other,
+    so they cannot share messages sent by each other.
+    To achieve that, declare const sockets = []; 
+** In app.js, both handleSubmit() and handleNickSubmit() use socket.send().
+    One sends a message and the other sends a nickname, but since the server receives both of them as "on("message",
+    it's impossible to distinguish what's what.
+    Therefore, when sending, the argument should be a stringified JSON object with 'type:payload' values.
+
+
+
+
+[ SocketIO: WebSocket Framework ]
+- SocketIO: Provides real-time, event-based communication using WebSocket.
+	It operates normally even if the browser's WebSocket is not available (high reliability).
+	Many features required for real-time communication are already built-in, making it convenient.
+	When connected to a SocketIO server,
+	http://localhost:3000/socket.io/socket.io.js
+	You can access the upper link.
+	Since the SocketIO feature is more extensive than the browser's WebSocket, SocketIO must also be installed on the browser (front).
+	So add the script to the view file after the above URL port path 
+		(script(src="/socket.io/socket.io.js"))
+
+- Features/Advantages:
+1. Unlike 'ws', you can specify the event name directly, and Objects can be passed. 
+	+) emit() function -> Multiple objects can also be passed. Unlimited.
+2. At the front(app.js), socket.emit() function's last argument can bind a callback function. (Optional, but must be placed at the very end.) If you call this callback function in the server.js on() method (done();), it will run on the front(app.js), not the back.
+3. If the server-browser are disconnected, it instantly searches for another active io server, and if it fails, it generates an error in the browser. It will repeatedly attempt every few seconds, so if you 'run' the server, the error will stop.
+4. Provides its own id (socket.id) and its own room. -> socket.rooms / socket.join("room_name");
+
+
+- Available Features:
+1. Joining a room: 
+	socket.join("roomName"); / socket.join(["roomName1", "roomName2"]); for multiple participation.
+2. Leaving a room: 
+	socket.leave("roomName"); / socket.leave(["roomName1", "roomName2"]); 
+3-1. Send message/message+event to "everyone else" in a room, send privately to 'other users'.
+	socket.to("roomName"); / socket.to(["roomName1", "roomName2"]); 
+	socket.to("roomName").emit("eventName", { some:"data" }); 
+	socket.to( /*specificUserSocketID*/ ).emit("hey"); 
+3-2. Send an event to all connected sockets on the server. 
+	io.sockets.emit("event", {some:"data"});
+4. Event executed when a user socket is disconnected (but still in the room): 
+	"disconnecting"
+5. Make all/specific socket in a certain room forcibly join another room (server.js): 
+	io.in("room1").socketJoin(["room2", "room3"]); 
+	io.in(theSocketId).socketJoin("room1");
+6. 'socket.rooms' and 'io.sockets.adapter.rooms' are different. 
+	socket.rooms: Returns a Set object of rooms that the connected user (browser) belongs to. 
+	io.sockets.adapter.rooms: Returns all rooms (key) and their socket IDs in a Set object (value) connected to socketIO (map object). 
+	io.sockets.adapter.sids: Returns all socket IDs (key) and (ID, room name Set) (value) connected to socketIO (map object). 
+	** adapter.rooms holds public + private // adapter.sids holds private only. 
+		rooms' key = all room IDs. 
+		sids' key = all socket IDs (= all private room IDs). 
+		The private room's ID, which the socket originally has, is equal to its socket ID.
+
+*** Note that, in JavaScript, when forEach in a 'map' object, the argument order is (val, key).
+
+
 
 [ Adapter ]
-연결도식 :
+Connection diagram :
 client1 - serverA(socket) - Mongo Adapter - MongoDB
 client2 - serverB(socket) - Mongo Adapter - MongoDB
-Adapter= 다른 서버에 연결된 client1과 client2도  소통할 수 있게 DB와 연결하는 역할
-    큰 규모의 application에는 필수적.
-    Adapter와 DB를 연결해 사용하지 않으면 메모리정보로 동작하기 때문에 client1과 client2는 통신할수 없다.
+Adapter= Allows client1 and client2 connected to different servers to communicate by connecting to the DB.
+	Essential for large-scale applications.
+	If the Adapter and DB are not connected for use, the system operates using memory information, so client1 and client2 cannot communicate. 
+
+
+
 
 [ Admin UI for SocketIO ]
-참고링크 : https://socket.io/docs/v4/admin-ui/
-=> SocketIO 백엔드를 위한 관리자 UI패널. 모든 sockets,rooms,user 확인 가능
-설치 필요 > npm i @socket.io/admin-ui
-개별/전체 소켓 방참여/퇴장 가능
+Reference link: https://socket.io/docs/v4/admin-ui/
+=> Admin UI panel for SocketIO backend. Allows viewing of all sockets, rooms, and users.
+Installation required > npm i @socket.io/admin-ui
+Allows individual or global socket joining/leaving of rooms.

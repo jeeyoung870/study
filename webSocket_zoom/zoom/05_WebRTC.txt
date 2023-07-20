@@ -1,78 +1,77 @@
 [ WebRTC API ]
+- What is WebRTC?   https://100s.tistory.com/59?category=1052192
 
-- WebRTC가 무엇일까:
-https://100s.tistory.com/59?category=1052192
-
-** WebSocket && SocketIO =  peer to peer (X)
-    서버가 모든 이벤트/메세지를 중개함. 모든 소켓은 서버와 연결되어 있어야 함.
+** WebSocket && SocketIO = not peer to peer
+	The server mediates all events and messages. All sockets must be connected to the server.
 ** WebRTC = peer to peer (O)
-    전송되는 영상/텍스트가 서버를 경유하지 않음. 사용자->사용자로 직접 전달됨(real-time)
-    브라우저끼리의 연결.    속도 up
+	The transmitted video/text doesn't go through the server. It's directly transferred from user to user (real-time).
+	This connection between browsers results in increased speed.
 
-- peer to peer연결 필요조건 : 
-    상대의 위치정보(위치/ip/오픈port/서버configuration)를 브라우저>서버로 알려줘야 함.
-    서버는 브라우저에 상대 브라우저의 위치를 알려주는 역할만 함
+- Conditions required for peer-to-peer connections: 
+	The browsers need to inform the server about their location information (position/IP/open port/server configuration). 
+	The server's role is only to inform the browsers about the locations of other browsers.
 
-[ WebRTC의 peer connection 만들기 ]
+
+[Creating a WebRTC Peer Connection]
 1) myPeerConnection = new RTCPeerConnection();
-2) peer-to-peer연결인 myPeerConnection에 stream(오디오+비디오)를 넣어줘야함. myStream.getTracks()
+2) Audio and video streams (myStream.getTracks()) need to be added to the myPeerConnection (peer-to-peer connection).
 
 
-[ 연결동작 역할&순서 ]
+[ Connecting Action Roles & Sequence ]
 
 1) Peer A:
         getUserMedia()
         addTrack(track, myStream)
-        createOffer()   //다른 브라우저가 참가할수있는 초대장 text제작
-        setLocalDescription(offer): 내 offer세팅하기  ->  send offer
+        createOffer()   //Create an invitation text for other browsers to join
+        setLocalDescription(offer): set my offer  ->  send offer
 2) Signaling Server:
-        ("offer", offer객체, roomName)
+        ("offer", offer object, roomName)
 3) Peer B:
-        setRemoteDescription(offer): Peer A의 offer세팅하기
+        setRemoteDescription(offer): set Peer A's offer
         getUserMedia()
         addTrack(track, myStream)
         createAnswer()
-        setLocalDescription(answer): 내 answer세팅하기    ->  send answer
+        setLocalDescription(answer): set my answer    ->  send answer
 4) Signaling Server:
         "answer"
 5) Peer A:
-        setRemoteDescription(): Peer B의 offer세팅하기
+        setRemoteDescription(): set Peer B's offer
 -------------------------------------------------
-// RTCIceCandidate 의 ice = Internet Connectivity Establishment //
+
+// ice of RTCIceCandidate = Internet Connectivity Establishment //
 1) Peer A:
-        "icecandidate" event 발생  ->  send candidate
+        "icecandidate" event emit  ->  send candidate
 2) Signaling Server:
         "candidate"
 3) Peer B:
         addIceCandidate()
 4) Peer B:
-        "icecandidate" event 발생  ->  send candidate
+        "icecandidate" event emit  ->  send candidate
 5) Signaling Server:
         "candidate"
 6) Peer A:
         addIceCandidate()
 ----------------------------------------------------
 last) Peer A && Peer B:
-        "addStream" event 발생  ->  enjoy audio+video
-        ("addStream" event 객체에서 상대 브라우저의 stream을 얻을 수 있다.)
+        "addStream" event emit  ->  enjoy audio+video
+        (Get the other browser's stream from the "addStream" event object.)
 
-결론:
-- Peer연결되려면, 내 RTCPeerConnection객체에 setLocalDescription(내 offer) 와 setRemoteDescription(상대방answer) 가 되어야 함
-- "icecandidate" 와 "addStream" 은 RTCPeerConnection객체에서 자동발생하는 event인데,
-    각각의 event 객체에서 상대방의 candidate와 stream 객체를 얻을 수 있다!
+Conclusion:
+- For Peer to connect, setLocalDescription(my offer) and setRemoteDescription(opponent's answer) must be set in my RTCPeerConnection object.
+- "icecandidate" and "addStream" are events that automatically occur in the RTCPeerConnection object, 
+        and you can obtain the other party's candidate and stream objects from each event object!
 
 
 
-[ 카메라 전환해도 상대 브라우저에서 연동되게 하기 ]
-- 연동끊기는 이유 : 
-    카메라 전환(handleCameraChange)할때마다 getMedia에서 myStream을 새로 만들어서 peerConnection에는 업데이트되지 않기 때문.
-    (내브라우저에서만 바뀌는것임)
-    상대 브라우저의 트랙도 바꿔줘야 함 -> Sender를 통해!
-
-- myPeerConnection.getSenders() :
-    현재 연결된 각 오디오/비디오 RTCRtpSender객체가 array로 반환됨 
-    ** Sender란?: 내가 Peer에게 보낸 media stream track을 컨트롤 가능
-    kind="video" 인 sender를 골라, RTCRtpSender.replaceTrack(바뀐트랙) 메소드로 비디오 트랙을 변경해준다.
+[ Synchronize camera switch with the other browser ]
+- Reason for disconnection:
+	The myStream is newly created in getMedia every time the camera is switched (handleCameraChange), so it is not updated in the peerConnection.
+	(This change only applies to my browser.)
+	The track on the other browser must also be changed -> Through the Sender!
+- myPeerConnection.getSenders():
+	Returns an array of currently connected audio/video RTCRtpSender objects
+	** What is a Sender? : Allows control of the media stream track sent to the Peer.
+	Choose a sender with kind="video", and change the video track using the RTCRtpSender.replaceTrack(changedTrack) method.
 
 
 
@@ -83,16 +82,14 @@ replaceTrack 오디오도 해야되나??
 
 
 
-[ Stun Server ]
+[ STUN Server ]
 
-- 모바일로 localtunnel url 접속하면 카메라전환, mute/unmute 등 기능이 제대로 되지 않는다.
-- 상대방과 내가 같은 wifi에 연결되어 있지 않기 때문이다.
-- 그를 위해 필요한 것이 STUN 서버이다.
-    STUN서버는 내 장치가 public(공용) IP주소를 알려줌(peer와 같이 사용가능한)
-- 실제 운영을 위해서는 직접 STUN서버 만들어야 하지만, 아닌 경우에는 google이 제공하는 STUN서버를 빌려쓸수 있다.
-    https://gist.github.com/zziuni/3741933
-    사용자 폭증으로 google제공 stun 사용이 원활하지 않음, 적용이 안돼서
-    나는 XIRSYS의 stun/turn을 적용했음.
-- Stun을 적용하니, 같은 wi-fi가 아니라도 peer접속이 되는것을 확인 가능함. (pc <-> 모바일데이터)
+- When accessing the localtunnel URL on a mobile device, functions such as camera switching, mute/unmute do not work properly.
+- This is because the other person and I are not connected to the same Wi-Fi.
+- This is where a STUN server comes in. 
+        STUN server helps my device know its public IP address (usable with a peer).
+- If you want to operate in reality, you need to create your own STUN server, but if not, you can use Google's provided STUN server. (https://gist.github.com/zziuni/3741933 )
+	Due to an increase in users, using Google's provided STUN server is not smooth, and it didn't work for me, so I applied XIRSYS's STUN/TURN instead. (https://xirsys.com/)
+- With the application of STUN, it is confirmed that peer connections can be made even if they are not on the same Wi-Fi (ex))PC <-> mobile data).
 
 

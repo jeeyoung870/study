@@ -1,19 +1,20 @@
 [ RTCPeerConnection.createDataChannel() ]
 
-- RTCPeerConnection에서 모든 종류의 데이터를 주고받을 수 있는 연결 채널을 만듬.
-- 이미지, 파일, 텍스트 등 모든 콘텐츠를 실시간 주고받을 수 있음
-    응용시 상대방의 위치좌표 등을 공유해 2P 게임도 구현 가능하다.
-- 비디오 WebRTC 구현했을 때 상호연결을 위해 "offer"/ "answer" 이벤트를 주고받는 것과 비슷하게 동작한다.
-- 비디오/오디오 실시간 스트림과 달리 속도저하에 크게 구애받지 않는다.
+- RTCPeerConnection creates a connection channel that allows exchanging all types of data.
+- It enables the real-time sharing of various content, such as images, files, and text. 
+  For example, it can be used to share location coordinates with other users, making it possible to implement 2P games.
+- Similar to how "offer" and "answer" events are used to establish mutual connections for video WebRTC implementation, 
+  this method functions in a similar manner.
+- Unlike real-time video/audio streaming, it is less affected by speed degradation.
 - https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection/createDataChannel
 
 # Syntax
 
-// 공통
+// Commom
 const pc = new RTCPeerConnection(options);
 
 //Offerer
-const channel = pc.createDataChannel("chat");   // "chat"이름의 채널 개설
+const channel = pc.createDataChannel("chat");   // make a channel names "chat"
 channel.onopen = (event) => {
   channel.send('Hi you!');
 }
@@ -24,31 +25,29 @@ pc.ondatachannel = (event) => {
     channel.onopen = (event) => {
     channel.send('Hi back!');
   }
-  // channel.send('Hi you!');시 반응.
+  // react when channel.send('Hi you!');
   channel.onmessage = (event) => {
     console.log(event.data);
   }
 }
 
 
-# 고려조건 추가
-채널 개설 코드 작성시
+# add consideration
+When writing the code for channel creation, you can specify the id as follows:
 pc.createDataChannel("chat", {negotiated: true, id: '000'});
-위와 같이 id를 지정할 수도 있다.
 
 ---------------------------------------------------------------------------------
 
-# 비디오/오디오 WebRTC의 단점 :
-    WebRTC는 압축되지 않은 최고사양의(full quality) 파일/스트림을 공유할 수 있다.
-    하지만 그로인한 속도저하에 대해 고려해야 함.
-    참여 사용자 !모두!가 서로 연결되어 있는 구조이기 때문에 소수에게는 유리하지만
-    다수의 사람들이 참가할 경우 속도가 느려진다.
-    (2명-P2P 서비스의 경우에 유리한 기술이다)
+# Weakness of Video/Audio WebRTC :
+    WebRTC enables sharing of uncompressed, full-quality files/streams.
+    However, one should consider the resulting decrease in speed.
+    Since all participating users are connected, it is advantageous for a small group but slows down when many people participate.
+    (It's a technology suited for 2-person P2P services)
 
-    !!! 그러나 비디오나 오디오 실시간 스트림 제공이 아닌 DataChannel은 다수의 peer 연결도 괜찮다 !!!
+    !!! However, DataChannels that do not provide real-time video or audio streams are fine with multiple peer connections !!!
 
-# 다수인원 스트리밍시 대체가능 기술 - SFU : 
-    SFU는 스트림/파일이 서버에 의존하여 공유된다.
-    peer들은 각자가 아닌 서버와 연결되어 있어서 한 번만 업로드하면 됨.
-    대신 서버는 크기가 작은 화면은 압축하여 저사양으로 공유하므로 다운받이 보여지는 영상도 저화질 스트림임
-    많은 인원도 속도저하 없이 사용가능
+# Alternative technology for multi-person streaming - SFU : 
+    SFU relies on the server for sharing streams/files.
+    Peers are connected to the server instead of each other, so only one upload is needed.
+    On the downside, the server compresses smaller screens and shares them at lower quality, so the downloaded and displayed video is a low-quality stream.
+    It can be used without any speed reduction with many participants.

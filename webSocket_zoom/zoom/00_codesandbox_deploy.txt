@@ -1,4 +1,4 @@
-[ Github Pages에 배포하기 ]
+[ Deploy on Github Pages ]
 
 1. 완성한 프로젝트를 Public repository에 새 branch로 push하기
 2. 프젝 git init경로에서 gh-pages 설치
@@ -9,76 +9,63 @@
     추가.
 4. 실행:
     zoom > npm run deploy
--> 안됨..
----------------------------------------------------------
-
-1.
-package.json 파일의 "scripts":{} 안에
-"start": "node build/server.js",
-"build": "babel src -d build"
-추가
-> npm run dev (=save시 자동 새로고침되는 개발용 실행)
-> npm run build (src안의 파일들을 babel로 컴파일, build폴더에 결과물 생성)
-> npm run start (build폴더안의 server.js파일 실행-배포버전 실행임.)
-
-npm run build 후에 npm run start 실행해서 오류 없이 프로젝트 실행되는지 확인
-
-2. gh-pages 설치
-    zoom > npm install --save gh-pages
-
-3. package.json 수정:
-   1) package.json 파일의 "scripts":{} 안에
-    "deploy": "gh-pages -d build"
-    추가
-   2) "homepage" 필드값을 배포될 github page url로 수정. 없으면 추가
-   "homepage": "https://jeeyoung870.github.io/870/"
-
--> 안됨.....
+-> Nope..
 ---------------------------------------------------------
 
 
-1. 완성한 프로젝트를 Public repository에 새 branch(이름 gh-pages)로 push하기
-    (gh-pages라는 이름의 브랜치를 깃허브에서 배포용 브랜치로 인식함.)
-2. 
+1. Add the following in the "scripts":{} of the package.json file: 
+    "start": "node build/server.js", 
+    "build": "babel src -d build"
+> npm run dev (automatically refreshes when saved, for development use)
+> npm run build (compiles files in the "src" folder using Babel, generates output in the "build" folder)
+> npm run start (executes server.js file in the build folder - this is for deployment).
+=> Check if the project runs without errors after executing 'npm run build' and 'npm run start'.
 
+2. Install gh-pages
+    Zoom > npm install --save gh-pages
+3. Modify package.json:
+    1) Add the following in the "scripts":{} of the package.json file: "deploy": "gh-pages -d build"
+    2) Modify the "homepage" field value to the URL of the GitHub page where it will be deployed. 
+        If the "homepage" field doesn't exist, add it. "homepage": "https://jeeyoung870.github.io/870/"
+
+--> Not working..... 
+
+---------------------------------------------------------
 ---------------------------------------------------------
 
 
-[codesandbox.io로 배포하기]
+[Deploying to codesandbox.io]
 
-1) 프로젝트 그대로 import함(npm install은 다해줘야됨)
+1) Import the project as is (do all necessary npm installs)
 
-2) Dependencies 설정
-
+2) Set up dependencies: 
 express
 ^4.17.1 (4.18.1)
 pug
 ^3.0.2 (3.0.2)
 ws
 ^7.5.3 (7.5.8)
+
 External resources
 
-3) External resources 설정
+3) Configure external resources: 
 External URL
-https://cdn.com/bootstrap.css
-
+https://cdn.com/bootstrap.css 
 Add Fonts:
-Google Fonts
+Google Fonts 
+Changes to 2 and 3 will be reflected automatically when modifying package.json.
 
-2,3번은 package.json 수정시 자동반영됨
-
-
-4) server.js 포트 수정
+4) Modify 'server.js' ports:
+Replace
 server.listen(3000, handleListen);
-이 부분을
-server.listen(process.env.PORT, handleListen);
-위와 같이 수정함.
+with
+server.listen(process.env.PORT, handleListen); 
 
+Replace
 app.set("views", __dirname + "/public/views");
-이 부분을
+with
 app.set("views", __dirname + "/views");
-위와 같이 수정함. (public을 기본경로로 인식)
+(As it recognizes "public" as the default path)
 
-5) codesandbox 컨테이너나 npm run dev 사용해 실행하기
-
--> 성공!!
+5) Run the project using codesandbox container or 'npm run dev'.
+-> Success!!

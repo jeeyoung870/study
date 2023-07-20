@@ -18,9 +18,10 @@ html(lang="en")
             div#call
                 div#myStream
                     video#myFace(autoplay, playsinline, width="50%", height="400")
+                    video#peerFace(autoplay, playsinline, width="50%", height="400")
                     br
                     button#mute Mute
                     button#camera Camera Off
                     select#cameras
-                video#peerFace(autoplay, playsinline, width="50%", height="400")
+                //- video#peerFace(autoplay, playsinline, width="50%", height="400")
         script(type='text/javascript' src="/public/js/app.js") 
