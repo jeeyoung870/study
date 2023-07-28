@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Boot3 Thymeleaf</title>
+</head>
+<body>
+
+<!--name값을 못가져올 경우 Name 출력됨-->
+<h1 th:text="${name}">Name</h1>
+<h1>Hello, <span th:text="${name}">Name</span></h1>
+<h1>Hello, [[${name}]]</h1>
+
+</body>
+</html>

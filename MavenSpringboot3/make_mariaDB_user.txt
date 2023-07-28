@@ -1,0 +1,68 @@
+-> When MariaDB has installed, we can access command prompt names 'MySQL Client (MariaDB 10.3 (x64))'
+    Run below to create and access as new user name 'boot3'
+    !!! Make sure that mariaDB's Path(D:\Program Files\MariaDB 10.3\bin) locates upper than mysql's Path at environmental variables !!!
+
+
+Enter password: *****(maria - I setted root pw when I install maria)
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.3.11-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| test               |
++--------------------+
+4 rows in set (0.033 sec)
+
+MariaDB [(none)]> use mysql;
+Database changed
+MariaDB [mysql]> create database boot3_db;
+Query OK, 1 row affected (0.010 sec)
+
+MariaDB [mysql]> CREATE USER 'boot3'@'%' IDENTIFIED BY 'boot3';
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [mysql]>  GRANT ALL PRIVILEGES ON boot3_db.* TO 'boot3'@'%';
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [mysql]> flush privileges;
+Query OK, 0 rows affected (0.009 sec)
+
+MariaDB [mysql]> select user, host from user;
++-------+-----------------+
+| user  | host            |
++-------+-----------------+
+| boot3 | %               |
+| root  | %               |
+| root  | 127.0.0.1       |
+| root  | ::1             |
+| root  | desktop-ok0g824 |
+| root  | localhost       |
++-------+-----------------+
+6 rows in set (0.001 sec)
+
+MariaDB [mysql]> exit;
+Bye
+
+D:\Program Files\MariaDB 10.3\bin>mysql -u boot3 -p
+Enter password: ***** (boot3)
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 9
+Server version: 10.3.11-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use boot3_db;
+Database changed
+MariaDB [boot3_db]>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add User</title>
+</head>
+<body>
+<!-- ${user}는 컨트롤러의 addUser(@Valid User myuser 의 변수명이 아니라 첫글자만 소문자인 클래스이름이다!! -->
+<form action="#" th:action="@{/adduser}" th:object="${user}" method="post">
+    <label for="name">Name</label>
+    <input type="text" th:field="*{name}" id="name">
+<!--  hasErrors('name') => name='name' 인 필드에서 발생한 BindingResult 메세지를 출력함-->
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <br/>
+    <label for="email">Email</label>
+    <input type="text" th:field="*{email}" id="email">
+    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+    <br/>
+    <input type="submit" value="Add User">
+</form>
+
+</body>
+</html>
