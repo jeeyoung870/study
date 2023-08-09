@@ -64,7 +64,6 @@ public class UserRestController {
     }
     @GetMapping
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-//    @PreAuthorize("hasAuthority('ADMIN')")
     public List<User> getUsers() {
         return userRepository.findAll();
     }

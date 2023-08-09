@@ -10,13 +10,22 @@ https://start.spring.io/
 Dependencies should be added :
 webmvc, data jpa, h2, mariadb, thymeleaf, validation, devtools, lombok (only for Dev)
 
-### Version Setting
+### Java Version Setting
 - When it comes to Spring Boot3(+), the minimum version it can accept is jdk-17.(JUnit5)
 - We can set environmental variable for this project which is only valid here.
   (Don't have to change global environmental variable) Do as below.
-1. 
+1. MavenSpringBoot3 > set JAVA_HOME=D:\Program Files\Java\jdk-17  (directory where jdk-17 locates)
+2. MavenSpringBoot3 > set PATH=%JAVA_HOME%\bin;%PATH%
+- !! If you close terminal, environmental variable will be initialised. !! 
 
+### Create and execute jar
+- create : MavenSpringBoot3 > mvnw package
+- run project : MavenSpringBoot3 > java -jar ./target/MavenSpringboot3-0.0.1-SNAPSHOT.jar
+- run with args : MavenSpringBoot3 > java -jar ./target/MavenSpringboot3-0.0.1-SNAPSHOT.jar --myboot.name=Spring
+- You can run just by pressing (Shift+F10) IDEA run
 
+### When your Korean text collapse...
+MavenSpringBoot3 > chcp 65001
 
 ### h2 Database
 Run Test version project, then you can access h2 DB on browser.
