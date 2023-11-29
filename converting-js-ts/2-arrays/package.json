@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "start": "ts-node test.ts",
+    "compile": "tsc *.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18",
+    "ts-node": "^10.9.1",
+    "type-coverage": "^2.24.1",
+    "typescript": "^4.9.4"
+  }
+}
